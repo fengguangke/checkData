@@ -73,7 +73,7 @@ def getMoneyToday(moneyType,userName,checkDate=None):
     for data in dataList:
         createTime = data['createTime']
         orderAmount = data['orderAmount']
-        payAmount = data['payAmount']
+        payAmount = data['receiptAmount']
 
         # check time
         createTimeStr = time.strftime("%Y-%m-%d",time.localtime(float(int(createTime)/1000)))
@@ -82,7 +82,7 @@ def getMoneyToday(moneyType,userName,checkDate=None):
             payAmountList.append(payAmount)
             continue
 
-    userData['data'] = {"AmountDetails":moneyList,"total":sum(moneyList),"payAmountDetails":payAmountList}
+    userData['data'] = {"orderAmountDetails":moneyList,"total":sum(payAmountList),"payAmountDetails":payAmountList}
     userData['name'] = userName
 
     return userData
@@ -115,21 +115,21 @@ def writeExcel(datas):
     # write title
     sheet_WX.write(0, 0, "Account")
     sheet_WX.write(0, 1, "Amount")
-    sheet_WX.write(0, 2, "AmountDetails")
+    sheet_WX.write(0, 2, "PayAmountDetails")
     sheet_WX.write(0, 3, "OrderAmountDetails")
 
     sheet_ZFB.write(0, 0, "Account")
     sheet_ZFB.write(0, 1, "Amount")
-    sheet_ZFB.write(0, 2, "AmountDetails")
+    sheet_ZFB.write(0, 2, "PayAmountDetails")
     sheet_ZFB.write(0, 3, "OrderAmountDetails")
 
     row = 1
     for data in datas_wx:
-        AmountDetails = map(lambda x:str(x),data['data']['AmountDetails'])
-        OrderAmountDetails = map(lambda x:str(x),data['data']['payAmountDetails'])
+        OrderAmountDetails = map(lambda x:str(x),data['data']['orderAmountDetails'])
+        payAmountDetails = map(lambda x:str(x),data['data']['payAmountDetails'])
         sheet_WX.write(row, 0, data['name'])
         sheet_WX.write(row, 1, data['data']['total'])
-        sheet_WX.write(row, 2, ",".join(AmountDetails))
+        sheet_WX.write(row, 2, ",".join(payAmountDetails))
         sheet_WX.write(row, 3, ",".join(OrderAmountDetails))
         row += 1
     row += 2
@@ -138,11 +138,11 @@ def writeExcel(datas):
 
     row = 1
     for data_zfb in datas_zfb:
-        AmountDetails = map(lambda x: str(x), data_zfb['data']['AmountDetails'])
-        OrderAmountDetails = map(lambda x: str(x), data_zfb['data']['payAmountDetails'])
+        OrderAmountDetails = map(lambda x: str(x), data_zfb['data']['orderAmountDetails'])
+        payAmountDetails = map(lambda x: str(x), data_zfb['data']['payAmountDetails'])
         sheet_ZFB.write(row, 0, data_zfb['name'])
         sheet_ZFB.write(row, 1, data_zfb['data']['total'])
-        sheet_ZFB.write(row, 2, ",".join(AmountDetails))
+        sheet_ZFB.write(row, 2, ",".join(payAmountDetails))
         sheet_ZFB.write(row, 3, ",".join(OrderAmountDetails))
         row += 1
     row += 2
@@ -162,7 +162,7 @@ if __name__ == '__main__':
     todayTotalMoney_WX = 0
     todayTotalMoney_ZFB = 0
     for acccount in accounts:
-        accountData_WX = getMoneyToday('WX',acccount,"2019-03-30")
+        accountData_WX = getMoneyToday('WX',acccount,"2019-03-31")
         allAccountsDatas_WX.append(accountData_WX)
         todayTotalMoney_WX += accountData_WX['data']['total']
 
