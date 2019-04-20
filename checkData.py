@@ -162,11 +162,7 @@ if __name__ == '__main__':
     todayTotalMoney_WX = 0
     todayTotalMoney_ZFB = 0
     for acccount in accounts:
-<<<<<<< HEAD
         accountData_WX = getMoneyToday('WX',acccount,"2019-04-19")
-=======
-        accountData_WX = getMoneyToday('WX',acccount,"2019-04-15")
->>>>>>> db54a779e90ec321b99ca4d02fd0ac8752a548f1
         allAccountsDatas_WX.append(accountData_WX)
         todayTotalMoney_WX += accountData_WX['data']['total']
 
