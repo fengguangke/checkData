@@ -1,11 +1,11 @@
 # checkData
-1.  文件介绍
+## 1.  文件介绍
 - checkData.py 获取收款明细
 - accounts.txt 想要获取的账号
 - checkData.xls 最终生成的excel文档(账号的收款明细)
 
 
-2. 修改checkData.py
+## 2. 修改checkData.py
 
 由于系统现在增加了权限验证，想要获取数据，首先需要登录，但是由于登录时有验证码，所以直接调用登录接口
 这条路走不通，目前的解决方案是：登录之后获取请求接口的cookie，然后把这个cookie放在脚本请求的请求头中
@@ -34,7 +34,7 @@ accountData_WX = getMoneyToday('WX',acccount,"2019-07-07",header = header)
 accountData_WX = getMoneyToday('WX',acccount,"2019-07-08",header = header)
 ```
 
-3. 执行checkData.py
+## 3. 执行checkData.py
 
 执行checkData.py,等输出结果，结果类似如下：
 ```text
