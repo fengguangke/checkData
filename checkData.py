@@ -5,7 +5,7 @@ import time
 import xlwt
 import os
 
-getOrderUrl = 'http://admin.mergiigle.com/api/manager/pay/userOrder/pageList'
+
 #orderStatus=3 已收款
 #orderType=1001 微信，orderType=1002 支付宝
 postBody = {
@@ -30,7 +30,7 @@ def readAccountFromFile(fileName):
 
     return accountsList
 
-def getMoneyToday(moneyType,userName,checkDate=None):
+def getMoneyToday(moneyType,userName,checkDate=None,header = None):
     """
     get user money of today
     :param moneyType:WX,ZFB,QQ...
@@ -62,7 +62,7 @@ def getMoneyToday(moneyType,userName,checkDate=None):
 
     body.update({"username":userName})
 
-    response = requests.post(getOrderUrl,json=body).json()
+    response = requests.post(getOrderUrl,json=body,headers = header).json()
     moneyList = []
     payAmountList = []
     dataList = response['data']['list']
@@ -154,24 +154,32 @@ def writeExcel(datas):
     workBook.save("checkData.xls")
 
 if __name__ == '__main__':
-    print u"开始获取数据"
+    getOrderUrl = 'http://admin.catmgiigle.com/api/manager/pay/userOrder/pageList'
+
+    print("开始获取数据")
     accounts = readAccountFromFile("accounts.txt")
     allAcountsDatas = {'WX':None,'ZFB':None,"totals":{'WX':None,'ZFB':None}}
     allAccountsDatas_WX = []
     allAccountsDatas_ZFB = []
     todayTotalMoney_WX = 0
     todayTotalMoney_ZFB = 0
+    #现在做了权限限制，所以需要登录，但登录有验证码，所以直接调登录接口无法实现，所以采取另外一种做法，直接拿登录后的cookie
+    #然后放在请求的headers里面
+    # 每次登陆后，header都需要修改
+    header = {"Cookie":"JSESSIONID=5F5E3DE2A01BF5DDADAB0C25952F257E"}
+
     for acccount in accounts:
-        accountData_WX = getMoneyToday('WX',acccount,"2019-04-19")
+        accountData_WX = getMoneyToday('WX',acccount,"2019-07-07",header = header)
         allAccountsDatas_WX.append(accountData_WX)
         todayTotalMoney_WX += accountData_WX['data']['total']
 
-        accountData_ZFB = getMoneyToday('ZFB',acccount)
-        allAccountsDatas_ZFB.append(accountData_ZFB)
-        todayTotalMoney_ZFB += accountData_ZFB['data']['total']
+        # 支付宝暂时不做，屏蔽掉
+        # accountData_ZFB = getMoneyToday('ZFB',acccount)
+        # allAccountsDatas_ZFB.append(accountData_ZFB)
+        # todayTotalMoney_ZFB += accountData_ZFB['data']['total']
 
     allAcountsDatas.update({'WX':allAccountsDatas_WX,'ZFB':allAccountsDatas_ZFB,'totals':{'WX':todayTotalMoney_WX,'ZFB':todayTotalMoney_ZFB}})
-    print u"总金额：" , allAcountsDatas['totals']
-    print u"获取数据结束"
+    print("总金额：" , allAcountsDatas['totals'])
+    print("获取数据结束")
     writeExcel(allAcountsDatas)
 
