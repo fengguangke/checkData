@@ -12,10 +12,10 @@
  
 - 如果获取登陆后请求的cookie
 
-步骤1：使用后台账号登录系统(jason账号) \
+步骤1：使用后台账号登录系统(jason账号) 
 步骤2：按F12键(chrome浏览器)，然后刷新浏览器抓请求，找到第一个请求然后点击，在右边切换到Headers标签栏，
 然后找到Request Headers部分。最后找到Cookie这个键值，copy这个键的值，比如我当前的键值对是：
-Cookie: JSESSIONID=5F5E3DE2A01BF5DDADAB0C25952F257E,有用的部分是冒号后面部分的字符串，例子中的是JSESSIONID=5F5E3DE2A01BF5DDADAB0C25952F257E \
+Cookie: JSESSIONID=5F5E3DE2A01BF5DDADAB0C25952F257E,有用的部分是冒号后面部分的字符串，例子中的是JSESSIONID=5F5E3DE2A01BF5DDADAB0C25952F257E 
 
 
 - 修改checkData.py文件
