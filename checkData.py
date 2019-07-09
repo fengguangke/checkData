@@ -154,7 +154,7 @@ def writeExcel(datas):
     workBook.save("checkData.xls")
 
 if __name__ == '__main__':
-    getOrderUrl = 'http://admin.catmgiigle.com/api/manager/pay/userOrder/pageList'
+    getOrderUrl = 'xxxx.xxx.xxx'
 
     print("开始获取数据")
     accounts = readAccountFromFile("accounts.txt")
