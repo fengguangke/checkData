@@ -154,7 +154,7 @@ def writeExcel(datas):
     workBook.save("checkData.xls")
 
 if __name__ == '__main__':
-    getOrderUrl = 'xxxx.xxx.xxx'
+    getOrderUrl = 'http://admin.catmgiigle.com/api/manager/pay/userOrder/pageList'
 
     print("开始获取数据")
     accounts = readAccountFromFile("accounts.txt")
@@ -166,10 +166,10 @@ if __name__ == '__main__':
     #现在做了权限限制，所以需要登录，但登录有验证码，所以直接调登录接口无法实现，所以采取另外一种做法，直接拿登录后的cookie
     #然后放在请求的headers里面
     # 每次登陆后，header都需要修改
-    header = {"Cookie":"JSESSIONID=5F5E3DE2A01BF5DDADAB0C25952F257E"}
+    header = {"Cookie":"JSESSIONID=1958FA274A0099D92F68DE9DD711DBF3"}
 
     for acccount in accounts:
-        accountData_WX = getMoneyToday('WX',acccount,"2019-07-07",header = header)
+        accountData_WX = getMoneyToday('WX',acccount,"2019-07-16",header = header)
         allAccountsDatas_WX.append(accountData_WX)
         todayTotalMoney_WX += accountData_WX['data']['total']
 
